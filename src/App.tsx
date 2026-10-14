@@ -4,7 +4,7 @@ import { Routes, Route, NavLink } from "react-router-dom";
 import { UsersPage } from './pages/UsersPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
-
+import { InferencesPage_Krutko } from './pages/InferencesPage_krutko'
 import './App.css'
 
 const queryClient = new QueryClient();
@@ -19,10 +19,14 @@ function App() {
         <nav>
           <NavLink to="/">Main</NavLink>
           <NavLink to="/users">User List</NavLink>
+          <NavLink to="/inferences-krutko">Inferences — Крутько</NavLink>
         </nav>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/users' element={<UsersPage />} />
+          <Route path='/inferences-krutko' 
+          element={<InferencesPage_Krutko />}
+        />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </section>
