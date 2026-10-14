@@ -1,56 +1,32 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import  { getUsers, type User } from './api/users';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Routes, Route, NavLink } from "react-router-dom";
 
-const DUMMY_PICTURE = 'https://thumbs.dreamstime.com/b/none-102846161.jpg?w=768';
+import { UsersPage } from './pages/UsersPage';
+import { HomePage } from './pages/HomePage';
+import { NotFoundPage } from './pages/NotFoundPage';
+
+import './App.css'
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const loadUserList = () => {
-    setLoading(true);
-    getUsers().then((userList) => {
-      if (userList) {
-        setTimeout(() => {
-          setUsers(userList.data);
-        }, 10000);
-      }
-    }).finally(() => setLoading(false));
-  }
-
-  useEffect(() => {
-    loadUserList()
-  }, []);
+ 
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <section id="center">
-        <div>
-          <h1>Users list</h1>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => loadUserList()}
-        >
-          Update user list
-        </button>
-        <div className='usersContainer'>
-          {loading && <h1>Users list loading...</h1>}
-          {!loading && users.map((user) => (
-            <div key={user.id} className='userCard'>
-              <div>{user.firstName} {user.lastName}</div>
-              <div>
-                {user.avatar?.map((avt) => (
-                  <img key={avt.uid} height={100} width={100} src={DUMMY_PICTURE} />)
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <nav>
+          <NavLink to="/">Main</NavLink>
+          <NavLink to="/users">User List</NavLink>
+        </nav>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/users' element={<UsersPage />} />
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
       </section>
-    </>
+    </QueryClientProvider>
   )
 }
 
